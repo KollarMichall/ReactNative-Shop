@@ -2,6 +2,8 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const app = express()
+const authJwt = require('./helpers/jwt')
+const errorHandler = require('./helpers/error-handler')
 
 require('dotenv/config')
 
@@ -9,12 +11,17 @@ app.use(express.json())
 app.use(cors())
 app.options('*', cors())
 
+//middleware
+// app.use(authJwt()) //fix later No product found
+app.use(errorHandler)
+app.use('/public/uploads', express.static(__dirname + '/public/uploads'))
+
 
 //Routes
 const categoriesRouters = require('./routers/categories')
 const productsRouters = require('./routers/products')
 const usersRouters = require('./routers/users')
-const ordersRouters = require('./routers/users')
+const ordersRouters = require('./routers/orders')
 
 const api = process.env.API_URL
 
